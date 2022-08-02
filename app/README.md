@@ -1,5 +1,37 @@
 # devday-demo-flow
 
+## Notes on theme folder issues
+
+This branch serves as a minimal example illustrating hot reload issues when using an externalized theme folder instead of @CssImport.
+
+* separate maven project containing the style (themefolder project)
+* added dependency to this project
+* IDE: Eclipse
+* both projects imported and open in the workspace
+* run configuration **with enabled workspace resolution** for `mvn jetty:run`
+
+### Expected behavior
+
+* I can start jetty using the run configuration (with enabled workspace resulution)
+* The applications starts and works
+* I can make changes in the styles.css of the themefolder project; these changes are seen in the running application
+
+### Actual behavior
+
+* The application starts but throws ExecutionFailedException (Theme annotation found but theme directory not found)
+
+### Further notes
+
+If the theme folder project was installed (mvn install) and is closed or if the workspace resolution is disabled, the application starts.
+In this case the theme folder is copied to `target/frontend/themes` and consequently is available.
+
+This is a workaround but not a very nice one for "fast" development.
+* Styling changes must be made to the copied css files and then transferred back to the files under version control.
+* In our case the theme folder project is a framework project. It contains Vaadin-related code used by several applications as well as common styles. 
+
+Using @CssImport and workspace resolution, it was possible to change framework and styling simultaneously and the jetty reload allowed us to see the changes in the running application.
+After a refactoring to the theme folder import, this is not possible anymore because the styles from the separate project are not picked up.
+
 ## Vaadin 14+ demo application (DevDays May / 2019)
 
 This is demo application is collection of tips-and-tricks and workarounds.

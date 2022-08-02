@@ -73,6 +73,11 @@
 
 
     <dependencies>
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>vaadin-themefolder</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-core</artifactId>
