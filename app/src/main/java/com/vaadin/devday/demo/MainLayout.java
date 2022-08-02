@@ -5,8 +5,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.WebInitParam;
+import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.devday.demo.views.AbsoluteLayoutView;
 import com.vaadin.devday.demo.views.AccordionView;
@@ -52,7 +52,6 @@ import com.vaadin.flow.server.InitialPageSettings;
 import com.vaadin.flow.server.InitialPageSettings.WrapMode;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.PageConfigurator;
-import com.vaadin.flow.server.RouteRegistry;
 import com.vaadin.flow.server.SystemMessages;
 import com.vaadin.flow.server.SystemMessagesInfo;
 import com.vaadin.flow.server.SystemMessagesProvider;
@@ -89,233 +88,233 @@ import elemental.json.JsonValue;
 @CssImport(value = "./styles/text-field-blue.css", themeFor = "vaadin-number-field")
 @CssImport(value = "./styles/combobox-item-font.css", themeFor = "vaadin-combo-box-item")
 @CssImport(value = "./styles/combobox-widepopup.css", themeFor = "vaadin-combo-box-overlay")
-@CssImport(value = "./styles/select-item.css", themeFor = "vaadin-item")
-@CssImport(value = "./styles/select-styles.css", themeFor = "vaadin-select-text-field")
+//@CssImport(value = "./styles/select-item.css", themeFor = "vaadin-item")
+//@CssImport(value = "./styles/select-styles.css", themeFor = "vaadin-select-text-field")
 @CssImport(value = "./styles/charts-dark.css", themeFor = "vaadin-chart", include = "vaadin-chart-default-theme")
 // @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0,
 // user-scalable=yes")
 // @BodySize(height = "100vh", width = "100vw")
 @PreserveOnRefresh
 public class MainLayout extends AppLayout implements RouterLayout,
-        AfterNavigationObserver, BeforeEnterObserver, PageConfigurator {
+	AfterNavigationObserver, BeforeEnterObserver, PageConfigurator {
 
-    private FlexLayout childWrapper = new FlexLayout();
-    private Tabs menu = new Tabs();
-    private String fullUrl;
+	private FlexLayout childWrapper = new FlexLayout();
+	private Tabs menu = new Tabs();
+	private String fullUrl;
 
-    private Tab createMenuItem(String title, VaadinIcon icon,
-            Class<? extends Component> target) {
-        HorizontalLayout div = new HorizontalLayout();
-        RouterLink link = new RouterLink(null, target);
-        if (icon != null)
-            link.add(icon.create());
-        link.add(title);
-        Tab tab = new Tab();
-        Button button = new Button();
-        button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-        button.setIcon(VaadinIcon.CLOSE.create());
-        button.addClickListener(event -> {
-            menu.remove(tab);
-        });
-        div.add(link, button);
-        tab.add(div);
-        return tab;
-    }
+	private Tab createMenuItem(String title, VaadinIcon icon,
+		Class<? extends Component> target) {
+		HorizontalLayout div = new HorizontalLayout();
+		RouterLink link = new RouterLink(null, target);
+		if (icon != null)
+			link.add(icon.create());
+		link.add(title);
+		Tab tab = new Tab();
+		Button button = new Button();
+		button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+		button.setIcon(VaadinIcon.CLOSE.create());
+		button.addClickListener(event -> {
+			menu.remove(tab);
+		});
+		div.add(link, button);
+		tab.add(div);
+		return tab;
+	}
 
-    private Tab createLogout() {
-        Tab tab = new Tab();
-        Button button = new Button();
-        button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-        button.setIcon(VaadinIcon.KEY.create());
-        button.addClickListener(event -> {
-            VaadinSession.getCurrent().getSession().invalidate();
-            UI.getCurrent().navigate("login");
-        });
-        tab.add(button);
-        return tab;
-    }
+	private Tab createLogout() {
+		Tab tab = new Tab();
+		Button button = new Button();
+		button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+		button.setIcon(VaadinIcon.KEY.create());
+		button.addClickListener(event -> {
+			VaadinSession.getCurrent().getSession().invalidate();
+			UI.getCurrent().navigate("login");
+		});
+		tab.add(button);
+		return tab;
+	}
 
-    public MainLayout() {
-        Image img = new Image("https://vaadin.com/images/vaadin-logo.svg",
-                "Vaadin Logo");
-        img.setHeight("35px");
-        menu.setOrientation(Tabs.Orientation.HORIZONTAL);
-        menu.addSelectedChangeListener(event -> {
-            // Note: This does not work if we do not have receiver executed in
-            // onAttach
-            getUI().ifPresent(
-                    ui -> System.out.println("Width " + ui.getInternals()
-                            .getExtendedClientDetails().getBodyClientWidth()));
-        });
-        Span appName = new Span(img);
-        appName.addClassName("hide-on-mobile");
-        addToNavbar(true, appName, menu);
-        getElement().getStyle().set("--vaadin-app-layout-navbar-background",
-                "var(--lumo-tint-30pct)");
-        menu.add(createMenuItem(AccordionView.TITLE, null, AccordionView.class),
-                createMenuItem(SplitLayoutView.TITLE, null,
-                        SplitLayoutView.class),
-                createMenuItem(DialogView.TITLE, null, DialogView.class),
-                createMenuItem(GridView.TITLE, null, GridView.class),
-                createMenuItem(VaadinBoardView.TITLE, null,
-                        VaadinBoardView.class),
-                createMenuItem(FormLayoutView.TITLE, null,
-                        FormLayoutView.class),
-                createMenuItem(ThemeVariantsView.TITLE, null,
-                        ThemeVariantsView.class),
-                createMenuItem(AbsoluteLayoutView.TITLE, null,
-                        AbsoluteLayoutView.class),
-                createMenuItem(UploadView.TITLE, null, UploadView.class),
-                createMenuItem(MainView.TITLE, null, MainView.class),
-                createLogout()
+	public MainLayout() {
+		Image img = new Image("https://vaadin.com/images/vaadin-logo.svg",
+			"Vaadin Logo");
+		img.setHeight("35px");
+		menu.setOrientation(Tabs.Orientation.HORIZONTAL);
+		menu.addSelectedChangeListener(event -> {
+			// Note: This does not work if we do not have receiver executed in
+			// onAttach
+			getUI().ifPresent(
+				ui -> System.out.println("Width " + ui.getInternals()
+					.getExtendedClientDetails().getBodyClientWidth()));
+		});
+		Span appName = new Span(img);
+		appName.addClassName("hide-on-mobile");
+		addToNavbar(true, appName, menu);
+		getElement().getStyle().set("--vaadin-app-layout-navbar-background",
+			"var(--lumo-tint-30pct)");
+		menu.add(createMenuItem(AccordionView.TITLE, null, AccordionView.class),
+			createMenuItem(SplitLayoutView.TITLE, null,
+				SplitLayoutView.class),
+			createMenuItem(DialogView.TITLE, null, DialogView.class),
+			createMenuItem(GridView.TITLE, null, GridView.class),
+			createMenuItem(VaadinBoardView.TITLE, null,
+				VaadinBoardView.class),
+			createMenuItem(FormLayoutView.TITLE, null,
+				FormLayoutView.class),
+			createMenuItem(ThemeVariantsView.TITLE, null,
+				ThemeVariantsView.class),
+			createMenuItem(AbsoluteLayoutView.TITLE, null,
+				AbsoluteLayoutView.class),
+			createMenuItem(UploadView.TITLE, null, UploadView.class),
+			createMenuItem(MainView.TITLE, null, MainView.class),
+			createLogout()
 
-        );
-        childWrapper.setSizeFull();
-        setContent(childWrapper);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI().ifPresent(ui -> ui.navigate(AccordionView.ROUTE)),
-                Key.F1);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI()
-                        .ifPresent(ui -> ui.navigate(SplitLayoutView.ROUTE)),
-                Key.F2);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI().ifPresent(ui -> ui.navigate(DialogView.ROUTE)),
-                Key.F3);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI().ifPresent(ui -> ui.navigate(GridView.ROUTE)),
-                Key.F4);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI()
-                        .ifPresent(ui -> ui.navigate(VaadinBoardView.ROUTE)),
-                Key.F5);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI()
-                        .ifPresent(ui -> ui.navigate(FormLayoutView.ROUTE)),
-                Key.F6);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI()
-                        .ifPresent(ui -> ui.navigate(ThemeVariantsView.ROUTE)),
-                Key.F7);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI()
-                        .ifPresent(ui -> ui.navigate(AbsoluteLayoutView.ROUTE)),
-                Key.F8);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI().ifPresent(ui -> ui.navigate(UploadView.ROUTE)),
-                Key.F9);
-        Shortcuts.addShortcutListener(this,
-                () -> getUI().ifPresent(ui -> ui.navigate("")), Key.F12);
+		);
+		childWrapper.setSizeFull();
+		setContent(childWrapper);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI().ifPresent(ui -> ui.navigate(AccordionView.ROUTE)),
+			Key.F1);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI()
+				.ifPresent(ui -> ui.navigate(SplitLayoutView.ROUTE)),
+			Key.F2);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI().ifPresent(ui -> ui.navigate(DialogView.ROUTE)),
+			Key.F3);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI().ifPresent(ui -> ui.navigate(GridView.ROUTE)),
+			Key.F4);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI()
+				.ifPresent(ui -> ui.navigate(VaadinBoardView.ROUTE)),
+			Key.F5);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI()
+				.ifPresent(ui -> ui.navigate(FormLayoutView.ROUTE)),
+			Key.F6);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI()
+				.ifPresent(ui -> ui.navigate(ThemeVariantsView.ROUTE)),
+			Key.F7);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI()
+				.ifPresent(ui -> ui.navigate(AbsoluteLayoutView.ROUTE)),
+			Key.F8);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI().ifPresent(ui -> ui.navigate(UploadView.ROUTE)),
+			Key.F9);
+		Shortcuts.addShortcutListener(this,
+			() -> getUI().ifPresent(ui -> ui.navigate("")), Key.F12);
 
-        System.out.println(
-                UI.getCurrent().getSession().getBrowser().getAddress());
-        final File f = new File(MainLayout.class.getProtectionDomain()
-                .getCodeSource().getLocation().getPath());
-        System.out.println(MainLayout.class.getProtectionDomain()
-                .getCodeSource().getLocation().getPath());
-        System.out.println(MainLayout.class.getClassLoader());
+		System.out.println(
+			UI.getCurrent().getSession().getBrowser().getAddress());
+		final File f = new File(MainLayout.class.getProtectionDomain()
+			.getCodeSource().getLocation().getPath());
+		System.out.println(MainLayout.class.getProtectionDomain()
+			.getCodeSource().getLocation().getPath());
+		System.out.println(MainLayout.class.getClassLoader());
 
-    }
+	}
 
-    public Tabs getMenu() {
-        System.out.println("Hello");
-        return menu;
-    }
+	public Tabs getMenu() {
+		System.out.println("Hello");
+		return menu;
+	}
 
-    @Override
-    protected void onAttach(AttachEvent attachEvent) {
-        // This is the method to fetch client details.
-        getUI().ifPresent(
-                ui -> ui.getPage().retrieveExtendedClientDetails(receiver -> {
-                    int screenWidth = receiver.getBodyClientWidth();
-                    System.out.println("Width " + screenWidth);
-                }));
+	@Override
+	protected void onAttach(AttachEvent attachEvent) {
+		// This is the method to fetch client details.
+		getUI().ifPresent(
+			ui -> ui.getPage().retrieveExtendedClientDetails(receiver -> {
+				int screenWidth = receiver.getBodyClientWidth();
+				System.out.println("Width " + screenWidth);
+			}));
 
-        try {
-            getUI().get().getSession().setAttribute("hostAddress",
-                    InetAddress.getLocalHost().getHostAddress().toString());
-            System.out.println(InetAddress
-                    .getByName(InetAddress.getLocalHost().getHostAddress())
-                    .getHostName());
-        } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        UI.getCurrent().getPage().executeJs(
-                "window.addEventListener('beforeunload', () => $0.$server.windowClosed(window.location)); ",
-                getElement());
-        UI.getCurrent().getElement().setAttribute("class", "my-class");
-        this.getElement().executeJs("return document.cookie;")
-                .then(String.class, value -> System.out.println(value));
+		try {
+			getUI().get().getSession().setAttribute("hostAddress",
+				InetAddress.getLocalHost().getHostAddress().toString());
+			System.out.println(InetAddress
+				.getByName(InetAddress.getLocalHost().getHostAddress())
+				.getHostName());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		UI.getCurrent().getPage().executeJs(
+			"window.addEventListener('beforeunload', () => $0.$server.windowClosed(window.location)); ",
+			getElement());
+		UI.getCurrent().getElement().setAttribute("class", "my-class");
+		this.getElement().executeJs("return document.cookie;")
+			.then(String.class, value -> System.out.println(value));
 
-    }
+	}
 
-    @ClientCallable
-    public void windowClosed(JsonValue location) {
-        JsonObject loc = (JsonObject) location;
-        String href = loc.get("href").toJson();
-        System.out.println("Window closed: " + href);
-    }
+	@ClientCallable
+	public void windowClosed(JsonValue location) {
+		JsonObject loc = (JsonObject) location;
+		String href = loc.get("href").toJson();
+		System.out.println("Window closed: " + href);
+	}
 
-    @Override
-    public void showRouterLayoutContent(HasElement content) {
-        if (content instanceof HasDynamicTitle) {
-            HasDynamicTitle titledComponent = (HasDynamicTitle) content;
-            System.out.println(titledComponent.getPageTitle());
-        }
-        System.out.println("Show router layout content");
-        childWrapper.getElement().appendChild(content.getElement());
-    }
+	@Override
+	public void showRouterLayoutContent(HasElement content) {
+		if (content instanceof HasDynamicTitle) {
+			HasDynamicTitle titledComponent = (HasDynamicTitle) content;
+			System.out.println(titledComponent.getPageTitle());
+		}
+		System.out.println("Show router layout content");
+		childWrapper.getElement().appendChild(content.getElement());
+	}
 
-    @Override
-    public void afterNavigation(AfterNavigationEvent event) {
-        Location location = event.getLocation();
-        String path = location.getPath();
-        String pathQ = location.getPathWithQueryParameters();
-        RouteConfiguration.forSessionScope().getRoute(path).ifPresent(route -> {
-            String url = RouteConfiguration.forSessionScope().getUrl(route);
-            System.out.println("Current path: " + path);
-            System.out.println("Current pathQ: " + pathQ);
-            System.out.println("Current url: " + fullUrl);
-            System.out.println("Current url: " + url);
-            System.out.println("Context root relative path: " + UI.getCurrent()
-                    .getInternals().getContextRootRelativePath());
-        });
-    }
+	@Override
+	public void afterNavigation(AfterNavigationEvent event) {
+		Location location = event.getLocation();
+		String path = location.getPath();
+		String pathQ = location.getPathWithQueryParameters();
+		RouteConfiguration.forSessionScope().getRoute(path).ifPresent(route -> {
+			String url = RouteConfiguration.forSessionScope().getUrl(route);
+			System.out.println("Current path: " + path);
+			System.out.println("Current pathQ: " + pathQ);
+			System.out.println("Current url: " + fullUrl);
+			System.out.println("Current url: " + url);
+			System.out.println("Context root relative path: " + UI.getCurrent()
+				.getInternals().getContextRootRelativePath());
+		});
+	}
 
-    @Override
-    public void configurePage(InitialPageSettings settings) {
-        settings.addInlineFromFile("./test.css", WrapMode.STYLESHEET);
-    }
+	@Override
+	public void configurePage(InitialPageSettings settings) {
+		settings.addInlineFromFile("./test.css", WrapMode.STYLESHEET);
+	}
 
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-    }
+	@Override
+	public void beforeEnter(BeforeEnterEvent event) {}
 
-    // Mapping servlet to other context, note the frontend mapping
-    @VaadinServletConfiguration(closeIdleSessions = true, heartbeatInterval = 120, productionMode = false)
-    @WebServlet(urlPatterns = { "/myapp/*",
-            "/frontend/*" }, asyncSupported = true, initParams = {
-                    @WebInitParam(name = "org.atmosphere.cpr.AtmosphereConfig.getInitParameter", value = "true"),
-                    @WebInitParam(name = "org.atmosphere.websocket.maxIdleTime", value = "45000") })
-    public static class Servlet extends VaadinServlet {
-        @Override
-        protected void servletInitialized() throws ServletException {
-            super.servletInitialized();
-            getService()
-                    .setSystemMessagesProvider(new SystemMessagesProvider() {
-                        @Override
-                        public SystemMessages getSystemMessages(
-                                SystemMessagesInfo systemMessagesInfo) {
-                            CustomizedSystemMessages messages = new CustomizedSystemMessages();
-                            messages.setSessionExpiredNotificationEnabled(
-                                    false);
-                            messages.setSessionExpiredURL(null);
-                            messages.setCookiesDisabledNotificationEnabled(
-                                    false);
-                            return messages;
-                        }
-                    });
-        }
-    }
+	// Mapping servlet to other context, note the frontend mapping
+	@VaadinServletConfiguration(closeIdleSessions = true, heartbeatInterval = 120, productionMode = false)
+	@WebServlet(urlPatterns = { "/myapp/*",
+		"/frontend/*" }, asyncSupported = true,
+		initParams = {
+			@WebInitParam(name = "org.atmosphere.cpr.AtmosphereConfig.getInitParameter", value = "true"),
+			@WebInitParam(name = "org.atmosphere.websocket.maxIdleTime", value = "45000") })
+	public static class Servlet extends VaadinServlet {
+		@Override
+		protected void servletInitialized() throws ServletException {
+			super.servletInitialized();
+			getService()
+				.setSystemMessagesProvider(new SystemMessagesProvider() {
+					@Override
+					public SystemMessages getSystemMessages(
+						SystemMessagesInfo systemMessagesInfo) {
+						CustomizedSystemMessages messages = new CustomizedSystemMessages();
+						messages.setSessionExpiredNotificationEnabled(
+							false);
+						messages.setSessionExpiredURL(null);
+						messages.setCookiesDisabledNotificationEnabled(
+							false);
+						return messages;
+					}
+				});
+		}
+	}
 }
