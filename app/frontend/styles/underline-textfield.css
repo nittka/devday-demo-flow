@@ -1,4 +1,0 @@
-:host([theme~="underline"]) [part="input-field"] {
-	border-bottom: 1px solid white;
-	border-radius: 0px;
-}   
