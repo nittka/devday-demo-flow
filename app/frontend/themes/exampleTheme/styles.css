@@ -1,3 +1,7 @@
 html, :host {
   --lumo-primary-color: #000000; 
 }
+
+.unsetFlex {
+	flex: unset;
+}

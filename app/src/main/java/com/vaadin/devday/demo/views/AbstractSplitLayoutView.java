@@ -21,6 +21,7 @@ import com.vaadin.flow.component.textfield.TextFieldVariant;
 public class AbstractSplitLayoutView extends SplitLayout {
 
 	protected boolean hsplithSecondaryFullHight = false;
+	protected boolean unsetFlex = false;
 	protected boolean fullSize = false;
 	protected String placeHolderText = "Placeholder";
 
@@ -51,6 +52,9 @@ public class AbstractSplitLayoutView extends SplitLayout {
 
 	private FlexLayout createFilterLayout() {
 		FlexLayout layout = new FlexLayout();
+		if (unsetFlex) {
+			layout.addClassName("unsetFlex");
+		}
 		for (int i = 0; i < 15; i++) {
 			TextField filter = new TextField("Filter " + i);
 			filter.addThemeVariants(TextFieldVariant.LUMO_SMALL);

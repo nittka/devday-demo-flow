@@ -6,7 +6,8 @@ import com.vaadin.flow.router.Route;
 public class SplitLayoutView2 extends AbstractSplitLayoutView {
 
 	public SplitLayoutView2() {
-		placeHolderText = "grid ok, split position wrong";
+		placeHolderText = "OK!!, unset flex for filter, no full height for 'grid'";
 		fullSize = true;
+		unsetFlex = true;
 	}
 }
